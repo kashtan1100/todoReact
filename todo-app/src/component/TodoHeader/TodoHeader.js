@@ -2,6 +2,7 @@ import React from "react";
 import './TodoHeader.css'
 import moment from "moment";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import DialogModal from "../Dialog/DialogModal";
 
 const whiteColor = '#fff';
 
@@ -59,6 +60,8 @@ const TodoHeader = () => {
                 <AddCircleIcon color={'primary'}/>
                 <span className={'icon-background'}/>
             </div>
+
+            <DialogModal />
         </div>
     )
 }
