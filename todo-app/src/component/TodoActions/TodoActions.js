@@ -3,7 +3,7 @@ import './TodoAction.css'
 
 const TodoActions = () => {
     return(
-        <div>Dialog Modal</div>
+        <div>Todo Actions</div>
     )
 }
 

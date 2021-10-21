@@ -4,7 +4,7 @@ import './DisplayTodo.css'
 
 const DisplayTodo = () => {
     return(
-        <div>Dialog Modal</div>
+        <div>Display Todo</div>
     )
 }
 
