@@ -34,11 +34,11 @@ const style = {
 }
 
 
-const TodoHeader = () => {
+const TodoHeader = ({handleOpenDialog, isOpen,formData,handleSetFieldValue}) => {
     const weekDay = moment().format('dddd');
     const date = moment().date();
 
-    return(
+    return (
         <div className={'todo-header'}>
             <div style={style.wrapper}>
                 <div className={'todos-count'}>
@@ -56,12 +56,18 @@ const TodoHeader = () => {
                 </div>
             </div>
 
-            <div className={'add-todo'}>
+            <div className={'add-todo'} onClick={handleOpenDialog}>
                 <AddCircleIcon color={'primary'}/>
                 <span className={'icon-background'}/>
             </div>
 
-            <DialogModal />
+            <DialogModal
+                handleOpenDialog={handleOpenDialog}
+                isOpen={isOpen}
+                formData={formData}
+                handleSetFieldValue={handleSetFieldValue}
+
+            />
         </div>
     )
 }

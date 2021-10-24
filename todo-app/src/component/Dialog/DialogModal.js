@@ -8,29 +8,27 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button'
 
 
-const DialogModal = () => {
+const DialogModal = ({handleOpenDialog,isOpen,handleSetFieldValue,formData}) => {
     return (
-        <Dialog open={true}>
+        <Dialog open={isOpen} onClose={handleOpenDialog}>
             <MuiDialogTitle>Add new Todo</MuiDialogTitle>
 
             <MuiDialogContent>
                 <form onSubmit={() => {
                 }}>
                     <TextField label={'Todo'} variant={'outlined'}
-                               onChange={(e) => {
-                               }}
-                               value={''}/>
+                               onChange={(e) => handleSetFieldValue('todoName',e.target.value)}
+                               value={formData.todoName}/>
 
                     <TextField label={'Note'} variant={'outlined'}
-                               onChange={(e) => {
-                               }}
-                               value={''}
+                               onChange={(e) => handleSetFieldValue('todoNote',e.target.value)}
+                               value={formData.todoNote}/>
                                multiline
                                minRows={4}
                     />
 
                     <MuiDialogActions>
-                        <Button onClick={ () => {} } color={'primary'}>Close</Button>
+                        <Button onClick={ handleOpenDialog } color={'primary'}>Close</Button>
                         <Button disabled={false} type={'submit'}
                                 onClick={ () => {} } color={'primary'}>Add</Button>
                     </MuiDialogActions>

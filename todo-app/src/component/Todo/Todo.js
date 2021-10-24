@@ -23,9 +23,17 @@ const Todo = () => {
 
     const handleOpenDialog = () => setIsOpen((prevState) => !prevState);
 
+    const handleSetFieldValue = (fieldName,value) =>
+        setFormData((prevState)=> ({...prevState,[fieldName]:value}))
+
     return(
         <div className={'todo-wrapper'}>
-            <TodoHeader />
+            <TodoHeader
+                handleOpenDialog={handleOpenDialog}
+                isOpen={isOpen}
+                handleSetFieldValue={handleSetFieldValue}
+                formData={formData}
+            />
 
             <TodoActions />
 
