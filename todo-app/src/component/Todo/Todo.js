@@ -26,6 +26,8 @@ const Todo = () => {
     const handleSetFieldValue = (fieldName,value) =>
         setFormData((prevState)=> ({...prevState,[fieldName]:value}))
 
+    const handleChangeTab = (tabValue) => setTab(tabValue)
+
     return(
         <div className={'todo-wrapper'}>
             <TodoHeader
@@ -35,7 +37,7 @@ const Todo = () => {
                 formData={formData}
             />
 
-            <TodoActions />
+            <TodoActions handleChangeTab={handleChangeTab} tab={tab}/>
 
             <TodoRender />
         </div>
