@@ -3,6 +3,7 @@ import './Todo.css'
 import TodoHeader from "../TodoHeader/TodoHeader";
 import TodoActions from "../TodoActions/TodoActions";
 import TodoRender from "../TodoRender/TodoRender";
+import {v4 as uuidv4} from 'uuid';
 
 
 const initialFormData = {
@@ -18,28 +19,80 @@ const Todo = () => {
     const [tab, setTab] = useState(0);
     const [isOpen, setIsOpen] = useState(false);
     const [isOpenDisplayTodo, setIsOpenDisplayTodo] = useState(false);
-    const [todo, setTodos] = useState([]);
+    const [todos, setTodos] = useState([]);
     const [formData, setFormData] = useState(initialFormData);
+
+    const resetAll = () => {
+        setIsOpen(false);
+        setIsOpenDisplayTodo(false);
+        setFormData(initialFormData);
+    }
 
     const handleOpenDialog = () => setIsOpen((prevState) => !prevState);
 
-    const handleSetFieldValue = (fieldName,value) =>
-        setFormData((prevState)=> ({...prevState,[fieldName]:value}))
+    const handleSetFieldValue = (fieldName, value) =>
+        setFormData((prevState) => ({...prevState, [fieldName]: value}))
 
     const handleChangeTab = (tabValue) => setTab(tabValue)
 
-    return(
+    const handleSetTodoOnSubmit = (e) => {
+        e.preventDefault();
+
+        if (formData.isEdit){
+            const editedTodos = todos;
+            editedTodos.splice(formData.index, 1, {...formData, isEdit: false, index: null})
+            setTodos(editedTodos)
+        }
+        else {
+            setTodos((prevState) => [...prevState, {...formData, id: uuidv4()}])
+        }
+
+        resetAll()
+    }
+
+    const handleMarkTodo = (isChecked, index) => {
+        const updatedTodos = todos.slice();
+        updatedTodos.splice(index, 1, {...todos[index], isFinished: isChecked})
+        setTodos(updatedTodos)
+    }
+
+    const handleOpenTodo = (todo) => {
+        setIsOpenDisplayTodo(true)
+        setFormData(todo)
+    }
+
+    const handleEditTodo = () => {
+        setFormData((prevState) => ({...prevState, isEdit: true}))
+        setIsOpenDisplayTodo(false)
+        handleOpenDialog();
+    }
+
+    const handleRemoveTodo = () => {
+        setTodos(todos.filter((item) => item.id !== formData.id));
+        resetAll()
+    }
+
+    return (
         <div className={'todo-wrapper'}>
             <TodoHeader
                 handleOpenDialog={handleOpenDialog}
                 isOpen={isOpen}
                 handleSetFieldValue={handleSetFieldValue}
                 formData={formData}
+                handleSetTodoOnSubmit={handleSetTodoOnSubmit}
+                handleEditTodo={handleEditTodo}
+                isOpenDisplayTodo={isOpenDisplayTodo}
+                handleRemoveTodo={handleRemoveTodo}
+                handleCloseButton={resetAll}
             />
 
             <TodoActions handleChangeTab={handleChangeTab} tab={tab}/>
 
-            <TodoRender />
+            <TodoRender
+                todos={todos}
+                handleMarkTodo={handleMarkTodo}
+                handleOpenTodo={handleOpenTodo}
+            />
         </div>
     )
 }
