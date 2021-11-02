@@ -15,12 +15,35 @@ const initialFormData = {
     index: null
 }
 
+const getIsFinishedTodosCount = (todos) => todos.reduce((acc, curr) => {
+    acc.total = todos.length
+
+    if(curr.isFinished){
+        acc.finished = acc.finished + 1;
+    }
+
+    return acc
+}, {total: 0, finished: 0})
+
+const setFilterTab = (tab, todos) => {
+    if (tab === 0) {
+        return todos
+    } else if (tab === 1) {
+        return todos.filter((todo) => !todo.isFinished)
+    } else if (tab === 2) {
+        return todos.filter((todo) => todo.isFinished)
+    }
+}
+
 const Todo = () => {
     const [tab, setTab] = useState(0);
     const [isOpen, setIsOpen] = useState(false);
     const [isOpenDisplayTodo, setIsOpenDisplayTodo] = useState(false);
     const [todos, setTodos] = useState([]);
     const [formData, setFormData] = useState(initialFormData);
+
+    const sortedTodos = setFilterTab(tab, todos);
+    const totalCount = getIsFinishedTodosCount(todos)
 
     const resetAll = () => {
         setIsOpen(false);
@@ -38,12 +61,11 @@ const Todo = () => {
     const handleSetTodoOnSubmit = (e) => {
         e.preventDefault();
 
-        if (formData.isEdit){
+        if (formData.isEdit) {
             const editedTodos = todos;
             editedTodos.splice(formData.index, 1, {...formData, isEdit: false, index: null})
             setTodos(editedTodos)
-        }
-        else {
+        } else {
             setTodos((prevState) => [...prevState, {...formData, id: uuidv4()}])
         }
 
@@ -84,12 +106,13 @@ const Todo = () => {
                 isOpenDisplayTodo={isOpenDisplayTodo}
                 handleRemoveTodo={handleRemoveTodo}
                 handleCloseButton={resetAll}
+                totalCount={totalCount}
             />
 
             <TodoActions handleChangeTab={handleChangeTab} tab={tab}/>
 
             <TodoRender
-                todos={todos}
+                todos={sortedTodos}
                 handleMarkTodo={handleMarkTodo}
                 handleOpenTodo={handleOpenTodo}
             />

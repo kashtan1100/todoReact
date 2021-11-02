@@ -11,7 +11,7 @@ import Button from '@material-ui/core/Button'
 const DialogModal = ({handleOpenDialog,isOpen,handleSetFieldValue,formData,handleSetTodoOnSubmit}) => {
     return (
         <Dialog open={isOpen} onClose={handleOpenDialog}>
-            <MuiDialogTitle>Add new Todo</MuiDialogTitle>
+            <MuiDialogTitle>{formData.isEdit ? 'Edit Todo' : 'Add new Todo'}</MuiDialogTitle>
 
             <MuiDialogContent>
                 <form onSubmit={handleSetTodoOnSubmit}>
@@ -27,7 +27,9 @@ const DialogModal = ({handleOpenDialog,isOpen,handleSetFieldValue,formData,handl
 
                     <MuiDialogActions>
                         <Button onClick={ handleOpenDialog } color={'primary'}>Close</Button>
-                        <Button disabled={false} type={'submit'} color={'primary'}>Add</Button>
+                        <Button disabled={!formData.todoName} type={'submit'} color={'primary'}>
+                            {formData.isEdit ? 'Edit' : 'Add'}
+                        </Button>
                     </MuiDialogActions>
                 </form>
             </MuiDialogContent>
